@@ -1,0 +1,3 @@
+# Site privé pour les participants : pas d'indexation.
+User-agent: *
+Disallow: /
