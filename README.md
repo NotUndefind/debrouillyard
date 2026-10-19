@@ -34,8 +34,6 @@ n'est jamais envoyé (il est exclu par le fichier `.gitignore`).
    de téléphone, date)** puis copiée dans `site/assets/img/participants/`.
 3. Publie la modification (voir ci-dessus).
 
-Le plan de la salle se met à jour de la même façon (fichier « Plan de la salle.jpg »).
-
 ## Modifier le contenu
 
 - **Participants** : `site/assets/js/data.js`

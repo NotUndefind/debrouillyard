@@ -6,7 +6,6 @@ Prépare les images du site à partir du dossier « Logo & photos participants �
   TOUTES les métadonnées supprimées (GPS, modèle du téléphone, date…).
   Le fichier doit être nommé avec l'id du participant (voir site/assets/js/data.js),
   ex. « lucas.jpg » ou « Téo.png ». Le HEIC n'est pas géré : exporter en JPG/PNG.
-- « Plan de la salle.* » : redimensionné, métadonnées supprimées.
 
 Les fichiers originaux ne sont jamais modifiés ni publiés.
 """
@@ -79,16 +78,11 @@ def main() -> None:
             skipped.append(f"{f.name} (illisible : {e})")
             continue
 
-        if key == "plan-de-la-salle":
-            img = trim_white(img)
-            img.thumbnail((1600, 1600), Image.LANCZOS)
-            save_jpeg(img, OUT_IMG / "plan-salle.jpg")
-            done.append(f"{f.name} → plan-salle.jpg")
-        elif key in ids:
+        if key in ids:
             img = ImageOps.fit(img, (800, 1000), Image.LANCZOS, centering=(0.5, 0.4))
             save_jpeg(img, OUT_PEOPLE / f"{key}.jpg")
             done.append(f"{f.name} → participants/{key}.jpg")
-        elif key not in {"logo", "img-0951"}:
+        elif key not in {"logo", "img-0951", "plan-de-la-salle"}:
             skipped.append(f"{f.name} (aucun participant avec l'id « {key} »)")
 
     print("\n✅ Images prêtes :" if done else "\nAucune image traitée.")
