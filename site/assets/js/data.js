@@ -13,8 +13,8 @@
 
 window.EVENT = {
   name: "La Débrouill'Yard",
-  // Départ du Tour 1 : samedi 16 janvier 2027, 12h00 (heure de Paris, UTC+1)
-  start: "2027-01-16T12:00:00+01:00",
+  // Départ du Tour 1 : samedi 30 janvier 2027, 12h00 (heure de Paris, UTC+1)
+  start: "2027-01-30T12:00:00+01:00",
   loopKm: 6.706,
   place: "Salle Jeanne d'Arc",
   town: "La Neuville-en-Tourne-à-Fuy (Ardennes)",
