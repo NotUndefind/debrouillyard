@@ -115,21 +115,33 @@
 
   const people = Array.isArray(window.PARTICIPANTS) ? window.PARTICIPANTS : [];
 
-  /* Accueil : pastilles */
+  const slots = Math.max(people.length, (window.EVENT && EVENT.maxRunners) || people.length);
+
+  /* Accueil : pastilles (inscrits puis places vierges) */
   const faces = $("[data-faces]");
   if (faces) {
-    people.forEach(p => {
+    for (let i = 0; i < slots; i++) {
+      const p = people[i];
+      if (!p) { faces.append(h("div", { class: "face blank", "aria-hidden": "true" })); continue; }
       const el = h("div", { class: "face", title: p.name, role: "img", "aria-label": p.name },
         h("span", { class: "initials", "aria-hidden": "true" }, initials(p.name)));
       faces.append(el);
       loadPhoto(el, p.id, p.name);
-    });
+    }
   }
 
   /* Page participants : cartes + recherche */
   const grid = $("[data-runners]");
   if (grid) {
-    people.forEach((p, idx) => {
+    for (let idx = 0; idx < slots; idx++) {
+      const p = people[idx];
+      if (!p) {
+        // Carte vierge : place pas encore attribuée
+        grid.append(h("article", { class: "runner blank reveal", "aria-hidden": "true" },
+          h("div", { class: "runner-photo" }),
+          h("div", { class: "runner-body" }, h("span", { class: "sk sk-1" }), h("span", { class: "sk sk-2" }))));
+        continue;
+      }
       const n = String(idx + 1).padStart(2, "0");
       const photo = h("div", { class: "runner-photo" },
         h("span", { class: "initials", "aria-hidden": "true" }, initials(p.name)),
@@ -142,7 +154,7 @@
       card.dataset.search = normalize(`${p.name} ${p.note || ""} ${n} ${idx + 1}`);
       grid.append(card);
       loadPhoto(photo, p.id, p.name);
-    });
+    }
     observeReveal(grid);
 
     const count = $("[data-count]");
@@ -151,13 +163,15 @@
     const update = () => {
       const q = normalize(input?.value || "");
       let shown = 0;
-      $$(".runner", grid).forEach(c => {
+      $$(".runner:not(.blank)", grid).forEach(c => {
         const ok = !q || c.dataset.search.includes(q);
         c.hidden = !ok;
         if (ok) { shown++; c.classList.add("in"); }
       });
-      if (count) count.textContent = `${shown} / ${people.length} coureurs`;
-      if (empty) empty.hidden = shown > 0;
+      // Pendant une recherche, on masque les cartes vierges
+      $$(".runner.blank", grid).forEach(c => (c.hidden = !!q));
+      if (count) count.textContent = q ? `${shown} résultat${shown > 1 ? "s" : ""}` : `${people.length} / ${slots} inscrits`;
+      if (empty) empty.hidden = !q || shown > 0;
     };
     input?.addEventListener("input", update);
     update();

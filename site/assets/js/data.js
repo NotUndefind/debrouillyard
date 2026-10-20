@@ -23,31 +23,9 @@ window.EVENT = {
 
 window.PHOTO_DIR = "assets/img/participants/";
 
+// Participants inscrits, dans l'ordre d'inscription.
+// Le numéro (dossard + box) = la position dans la liste.
+// Les places restantes jusqu'à maxRunners s'affichent en cartes vierges.
+// Exemple :  { id: "lucas", name: "Lucas" },
 window.PARTICIPANTS = [
-  { id: "lucas",      name: "Lucas" },
-  { id: "teo",        name: "Téo" },
-  { id: "matthieu",   name: "Matthieu" },
-  { id: "jules",      name: "Jules" },
-  { id: "pierre",     name: "Pierre", note: "Vespa" },
-  { id: "remi",       name: "Rémi" },
-  { id: "augustin",   name: "Augustin" },
-  { id: "corentin",   name: "Corentin" },
-  { id: "manon",      name: "Manon" },
-  { id: "ysaline",    name: "Ysaline" },
-  { id: "lea",        name: "Léa" },
-  { id: "bastien",    name: "Bastien" },
-  { id: "joris",      name: "Joris" },
-  { id: "gonzague",   name: "Gonzague" },
-  { id: "hugo",       name: "Hugo" },
-  { id: "noemie",     name: "Noémie" },
-  { id: "maxime",     name: "Maxime" },
-  { id: "arsene",     name: "Arsène" },
-  // TODO : remplacer par son prénom
-  { id: "invitee-maxime", name: "Invitée de Maxime" },
-  { id: "alexandre",  name: "Alexandre" },
-  { id: "maurin",     name: "Maurin" },
-  { id: "kdcoaching", name: "Kdcoaching" },
-  { id: "jeje",       name: "Jéjé" },
-  { id: "guillaume",  name: "Guillaume" },
-  { id: "baptiste",   name: "Baptiste" },
 ];

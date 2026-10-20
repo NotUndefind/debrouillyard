@@ -354,6 +354,13 @@ section { padding: clamp(80px, 11vw, 160px) 0; position: relative; }
 .runner-body { padding: 18px 20px 22px; }
 .runner-body .name { font-size: 22px; font-weight: 600; letter-spacing: -.02em; line-height: 1.15; }
 .runner-body .meta { font-size: 14px; color: var(--muted); margin-top: 4px; }
+.runner.blank { background: transparent; border: 1.5px dashed var(--line); }
+.runner.blank:hover { transform: none; }
+.runner.blank .runner-photo { background: repeating-linear-gradient(-45deg, transparent 0 10px, rgba(0,0,0,.025) 10px 20px); }
+.runner-body .sk { display: block; height: 12px; border-radius: 6px; background: var(--bg-2); }
+.runner-body .sk-1 { width: 60%; height: 16px; }
+.runner-body .sk-2 { width: 40%; margin-top: 10px; }
+.face.blank { background: transparent; border: 1.5px dashed var(--line); }
 .empty { padding: 60px 0; text-align: center; color: var(--muted); }
 
 .hosts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
