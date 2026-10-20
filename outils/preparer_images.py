@@ -4,8 +4,9 @@ Prépare les images du site à partir du dossier « Logo & photos participants �
 
 - Photos participants : recadrées en 4:5, 800x1000, JPEG compressé,
   TOUTES les métadonnées supprimées (GPS, modèle du téléphone, date…).
-  Le fichier doit être nommé avec l'id du participant (voir site/assets/js/data.js),
-  ex. « lucas.jpg » ou « Téo.HEIC ». Les photos iPhone (HEIC) sont converties automatiquement.
+  Nom du fichier : « Prénom Nom numéro », ex. « Arsène Moncassin 09.jpeg ».
+  Le prénom + nom donnent l'id (arsene-moncassin), à reporter dans site/assets/js/data.js.
+  Les photos iPhone (HEIC) sont converties automatiquement.
 
 Les fichiers originaux ne sont jamais modifiés ni publiés.
 """
@@ -86,7 +87,8 @@ def main() -> None:
     for f in sorted(SRC.iterdir()):
         if f.suffix.lower() not in EXTS or f.name.startswith("."):
             continue
-        key = slug(f.stem)
+        # « Arsène Moncassin 09 » → « arsene-moncassin » (le numéro de dossard est ignoré ici)
+        key = slug(re.sub(r"[\s_-]*\d{1,4}$", "", f.stem))
         try:
             img = clean_copy(open_any(f))
         except Exception as e:  # fichier corrompu ou format non reconnu
@@ -97,7 +99,7 @@ def main() -> None:
             img = ImageOps.fit(img, (800, 1000), Image.LANCZOS, centering=(0.5, 0.4))
             save_jpeg(img, OUT_PEOPLE / f"{key}.jpg")
             done.append(f"{f.name} → participants/{key}.jpg")
-        elif key not in {"logo", "img-0951", "plan-de-la-salle"}:
+        elif key not in {"logo", "img-0951", "parcours", "plan-de-la-salle"}:
             skipped.append(f"{f.name} (aucun participant avec l'id « {key} »)")
 
     print("\n✅ Images prêtes :" if done else "\nAucune image traitée.")

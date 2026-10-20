@@ -21,15 +21,18 @@ window.EVENT = {
   maxRunners: 25,
   // Nombre d'inscrits affiché dans les compteurs, en attendant d'avoir leurs prénoms.
   // Mettre null pour compter automatiquement à partir de la liste PARTICIPANTS.
-  registered: 2,
+  registered: 4,
 };
 
 window.PHOTO_DIR = "assets/img/participants/";
 
-// Participants inscrits.
-// `bib` = numéro de dossard (et de box). Sans `bib`, le coureur prend
-// le premier numéro libre. Les places restantes s'affichent en cartes vierges.
-// `id` = nom de la photo (ex. photo « lucas-dubois.jpg » → id: "lucas-dubois").
+// Participants inscrits, dans l'ordre d'inscription (les cartes suivent cet ordre).
+// `bib`  = numéro de dossard, tel qu'il doit s'afficher (jusqu'à 4 chiffres, ex. "07", "2003").
+// `id`   = photo préparée par l'outil : « Arsène Moncassin 09.jpeg » → "arsene-moncassin".
+// `name` = ce qui s'affiche sur la carte (prénom seulement).
+// Les places restantes jusqu'à maxRunners s'affichent en cartes vierges.
 window.PARTICIPANTS = [
-  { id: "lucas-dubois", name: "Lucas", bib: 7 },
+  { id: "lucas-dubois",     name: "Lucas",  bib: "07" },
+  { id: "teo-serralunga",   name: "Téo",    bib: "2003" },
+  { id: "arsene-moncassin", name: "Arsène", bib: "09" },
 ];

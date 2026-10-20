@@ -26,8 +26,8 @@ n'est jamais envoyé (il est exclu par le fichier `.gitignore`).
 
 ## Ajouter les photos des participants
 
-1. Dépose la photo dans `Logo & photos participants/`, nommée avec l'id du participant
-   (voir `site/assets/js/data.js`) : `lucas.jpg`, `teo.png`, `jeje.jpg`…
+1. Dépose la photo dans `Logo & photos participants/`, nommée
+   au format « Prénom Nom numéro » : `Arsène Moncassin 09.jpeg`, `Téo Serralunga 2003.png`…
    Formats : JPG, PNG, WEBP et HEIC (photos iPhone, converties automatiquement).
 2. Double-clique sur `outils/Préparer les photos.command`.
    La photo est recadrée, compressée, **nettoyée de ses métadonnées (position GPS, modèle

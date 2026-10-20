@@ -115,12 +115,10 @@
 
   const people = Array.isArray(window.PARTICIPANTS) ? window.PARTICIPANTS : [];
 
-  // Place de chaque coureur : son dossard (`bib`) s'il en a un, sinon le premier numéro libre.
-  const slots = Math.max(people.length, (window.EVENT && EVENT.maxRunners) || people.length,
-    ...people.map(p => (Number.isInteger(p.bib) ? p.bib : 0)));
-  const bySlot = new Array(slots).fill(null);
-  people.filter(p => Number.isInteger(p.bib) && p.bib >= 1 && !bySlot[p.bib - 1]).forEach(p => (bySlot[p.bib - 1] = p));
-  people.filter(p => !bySlot.includes(p)).forEach(p => { const i = bySlot.indexOf(null); if (i >= 0) bySlot[i] = p; });
+  // Les inscrits remplissent les cartes dans l'ordre de la liste, puis viennent les places vierges.
+  const slots = Math.max(people.length, (window.EVENT && EVENT.maxRunners) || people.length);
+  const bySlot = Array.from({ length: slots }, (_, i) => people[i] || null);
+  const bibOf = p => String(p.bib ?? "").replace(/[^0-9]/g, "").slice(0, 4);
 
   /* ---------- Places restantes + état « complet » ---------- */
   const max = (window.EVENT && EVENT.maxRunners) || 25;
@@ -163,16 +161,16 @@
           h("div", { class: "runner-body" }, h("span", { class: "sk sk-1" }), h("span", { class: "sk sk-2" }))));
         continue;
       }
-      const n = String(idx + 1).padStart(2, "0");
+      const n = bibOf(p);
       const photo = h("div", { class: "runner-photo" },
         h("span", { class: "initials", "aria-hidden": "true" }, initials(p.name)),
-        h("div", { class: "runner-bib" }, "N°", h("b", null, n)));
+        n ? h("div", { class: "runner-bib" }, "N°", h("b", null, n)) : null);
       const card = h("article", { class: "runner reveal" },
         photo,
         h("div", { class: "runner-body" },
           h("h2", { class: "name" }, p.name),
-          h("div", { class: "meta" }, `Dossard ${n} · Box ${n}${p.note ? " · " + p.note : ""}`)));
-      card.dataset.search = normalize(`${p.name} ${p.note || ""} ${n} ${idx + 1}`);
+          h("div", { class: "meta" }, n ? `Dossard ${n}` : "Dossard à venir")));
+      card.dataset.search = normalize(`${p.name} ${n} ${n.replace(/^0+/, "")}`);
       grid.append(card);
       loadPhoto(photo, p.id, p.name);
     }
