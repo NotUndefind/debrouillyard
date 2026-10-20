@@ -141,6 +141,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .nav-links a.active { color: var(--ink); background: rgba(0,0,0,.06); }
 .nav-cta { margin-left: 8px; }
 .nav-links a.btn-dark, .nav-links a.btn-dark:hover { color: #fff; background: var(--ink); }
+.nav-links a.btn-red, .nav-links a.btn-red:hover { color: #fff; background: var(--red); }
+.nav-links a.btn-red:hover { background: var(--red-dark); }
 .burger { display: none; width: 44px; height: 44px; border-radius: 50%; position: relative; }
 .burger span, .burger span::before, .burger span::after {
   position: absolute; left: 50%; width: 20px; height: 1.6px; background: var(--ink);
@@ -168,6 +170,8 @@ body.menu-open .burger span::after { transform: translateY(-6px) rotate(-45deg);
 .btn-red { background: var(--red); color: #fff; }
 .btn-red:hover { background: var(--red-dark); }
 .btn-ghost { border: 1px solid var(--line); background: var(--card); }
+.btn-xl { padding: 18px 34px; font-size: 18px; }
+.btn.disabled { background: var(--bg-2); color: var(--muted); pointer-events: none; }
 .btn-light { background: #fff; color: var(--ink); }
 .btn .arrow { transition: transform .2s; }
 .btn:hover .arrow { transform: translateX(3px); }
@@ -313,6 +317,10 @@ section { padding: clamp(80px, 11vw, 160px) 0; position: relative; }
   border: 1px solid currentColor; display: grid; place-items: center;
   align-self: flex-end; transition: transform .3s;
 }
+.cards-4 { grid-template-columns: repeat(4, 1fr); }
+.link-card-red { background: var(--red); color: #fff; border-color: var(--red); }
+.link-card-red .muted, .link-card-red .label { color: #ffe1df; }
+.link-card-red .label::before { background: #fff; }
 .link-card:hover .go { transform: rotate(-45deg); background: var(--red); border-color: var(--red); }
 
 /* ---------- Participants ---------- */
@@ -327,6 +335,10 @@ section { padding: clamp(80px, 11vw, 160px) 0; position: relative; }
   padding: 12px 20px;
 }
 .search input { border: 0; outline: 0; background: none; font: inherit; font-size: 16px; width: 100%; color: var(--ink); }
+.toolbar-end { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.spots { font-size: 15px; color: var(--muted); }
+.spots b { color: var(--red); font-size: 22px; letter-spacing: -.02em; }
+.flow.flow-3 { grid-template-columns: repeat(3, 1fr); }
 .count-pill { font-family: var(--mono); font-size: 13px; color: var(--muted); }
 
 .runners { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
@@ -577,6 +589,7 @@ footer { background: var(--night); color: #fff; padding: 80px 0 32px; }
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
   .rules, .milestones, .cards-3 { grid-template-columns: 1fr 1fr; }
+  .flow.flow-3 { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr 1fr; }
   .flow { grid-template-columns: 1fr 1fr; }
   .kit { grid-template-columns: 1fr; gap: 24px; }
@@ -590,7 +603,7 @@ footer { background: var(--night); color: #fff; padding: 80px 0 32px; }
     gap: 4px; transform: translateY(-120%); transition: transform .35s; z-index: -1;
   }
   .nav-links a { font-size: 22px; padding: 12px 0; border-radius: 0; background: none !important; }
-  .nav-links a.nav-cta { margin: 12px 0 0; justify-content: center; background: var(--ink) !important; border-radius: 999px; padding: 14px; font-size: 16px; }
+  .nav-links a.nav-cta { margin: 12px 0 0; justify-content: center; background: var(--red) !important; color: #fff !important; border-radius: 999px; padding: 14px; font-size: 16px; }
   body.menu-open .nav-links { transform: none; }
   body.menu-open .nav { background: var(--bg); }
   .burger { display: block; }

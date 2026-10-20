@@ -117,6 +117,20 @@
 
   const slots = Math.max(people.length, (window.EVENT && EVENT.maxRunners) || people.length);
 
+  /* ---------- Places restantes + état « complet » ---------- */
+  const max = (window.EVENT && EVENT.maxRunners) || 25;
+  const left = Math.max(0, max - people.length);
+  $$("[data-spots-left]").forEach(el => (el.textContent = left));
+  $$("[data-spots-taken]").forEach(el => (el.textContent = Math.min(people.length, max)));
+  if (left === 0) {
+    $$("[data-signup]").forEach(a => {
+      a.classList.add("disabled");
+      a.removeAttribute("href");
+      a.setAttribute("aria-disabled", "true");
+      a.textContent = "Complet : les 25 places sont prises";
+    });
+  }
+
   /* Accueil : pastilles (inscrits puis places vierges) */
   const faces = $("[data-faces]");
   if (faces) {
