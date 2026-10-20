@@ -19,6 +19,9 @@ window.EVENT = {
   place: "Salle Jeanne d'Arc",
   town: "La Neuville-en-Tourne-à-Fuy (Ardennes)",
   maxRunners: 25,
+  // Nombre d'inscrits affiché dans les compteurs, en attendant d'avoir leurs prénoms.
+  // Mettre null pour compter automatiquement à partir de la liste PARTICIPANTS.
+  registered: 2,
 };
 
 window.PHOTO_DIR = "assets/img/participants/";

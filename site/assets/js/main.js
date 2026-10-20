@@ -119,9 +119,11 @@
 
   /* ---------- Places restantes + état « complet » ---------- */
   const max = (window.EVENT && EVENT.maxRunners) || 25;
-  const left = Math.max(0, max - people.length);
+  const manual = window.EVENT && Number.isInteger(EVENT.registered) ? EVENT.registered : 0;
+  const taken = Math.min(max, Math.max(people.length, manual));
+  const left = max - taken;
   $$("[data-spots-left]").forEach(el => (el.textContent = left));
-  $$("[data-spots-taken]").forEach(el => (el.textContent = Math.min(people.length, max)));
+  $$("[data-spots-taken]").forEach(el => (el.textContent = taken));
   if (left === 0) {
     $$("[data-signup]").forEach(a => {
       a.classList.add("disabled");
@@ -184,7 +186,7 @@
       });
       // Pendant une recherche, on masque les cartes vierges
       $$(".runner.blank", grid).forEach(c => (c.hidden = !!q));
-      if (count) count.textContent = q ? `${shown} résultat${shown > 1 ? "s" : ""}` : `${people.length} / ${slots} inscrits`;
+      if (count) count.textContent = q ? `${shown} résultat${shown > 1 ? "s" : ""}` : `${taken} / ${max} inscrits`;
       if (empty) empty.hidden = !q || shown > 0;
     };
     input?.addEventListener("input", update);
