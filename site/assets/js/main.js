@@ -115,7 +115,12 @@
 
   const people = Array.isArray(window.PARTICIPANTS) ? window.PARTICIPANTS : [];
 
-  const slots = Math.max(people.length, (window.EVENT && EVENT.maxRunners) || people.length);
+  // Place de chaque coureur : son dossard (`bib`) s'il en a un, sinon le premier numéro libre.
+  const slots = Math.max(people.length, (window.EVENT && EVENT.maxRunners) || people.length,
+    ...people.map(p => (Number.isInteger(p.bib) ? p.bib : 0)));
+  const bySlot = new Array(slots).fill(null);
+  people.filter(p => Number.isInteger(p.bib) && p.bib >= 1 && !bySlot[p.bib - 1]).forEach(p => (bySlot[p.bib - 1] = p));
+  people.filter(p => !bySlot.includes(p)).forEach(p => { const i = bySlot.indexOf(null); if (i >= 0) bySlot[i] = p; });
 
   /* ---------- Places restantes + état « complet » ---------- */
   const max = (window.EVENT && EVENT.maxRunners) || 25;
@@ -137,7 +142,7 @@
   const faces = $("[data-faces]");
   if (faces) {
     for (let i = 0; i < slots; i++) {
-      const p = people[i];
+      const p = bySlot[i];
       if (!p) { faces.append(h("div", { class: "face blank", "aria-hidden": "true" })); continue; }
       const el = h("div", { class: "face", title: p.name, role: "img", "aria-label": p.name },
         h("span", { class: "initials", "aria-hidden": "true" }, initials(p.name)));
@@ -150,7 +155,7 @@
   const grid = $("[data-runners]");
   if (grid) {
     for (let idx = 0; idx < slots; idx++) {
-      const p = people[idx];
+      const p = bySlot[idx];
       if (!p) {
         // Carte vierge : place pas encore attribuée
         grid.append(h("article", { class: "runner blank reveal", "aria-hidden": "true" },

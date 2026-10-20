@@ -5,12 +5,14 @@ Prépare les images du site à partir du dossier « Logo & photos participants �
 - Photos participants : recadrées en 4:5, 800x1000, JPEG compressé,
   TOUTES les métadonnées supprimées (GPS, modèle du téléphone, date…).
   Le fichier doit être nommé avec l'id du participant (voir site/assets/js/data.js),
-  ex. « lucas.jpg » ou « Téo.png ». Le HEIC n'est pas géré : exporter en JPG/PNG.
+  ex. « lucas.jpg » ou « Téo.HEIC ». Les photos iPhone (HEIC) sont converties automatiquement.
 
 Les fichiers originaux ne sont jamais modifiés ni publiés.
 """
 import re
+import subprocess
 import sys
+import tempfile
 import unicodedata
 from pathlib import Path
 
@@ -25,7 +27,7 @@ SITE = ROOT / "site"
 OUT_PEOPLE = SITE / "assets" / "img" / "participants"
 OUT_IMG = SITE / "assets" / "img"
 DATA_JS = SITE / "assets" / "js" / "data.js"
-EXTS = {".jpg", ".jpeg", ".png", ".webp"}
+EXTS = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"}
 MAX_INPUT_PIXELS = 60_000_000  # refuse les images démesurées (bombe de décompression)
 Image.MAX_IMAGE_PIXELS = MAX_INPUT_PIXELS
 
@@ -37,6 +39,21 @@ def slug(name: str) -> str:
 
 def participant_ids() -> set:
     return set(re.findall(r'id:\s*"([a-z0-9-]+)"', DATA_JS.read_text(encoding="utf-8")))
+
+
+def open_any(path: Path) -> Image.Image:
+    """Ouvre une image ; les HEIC (iPhone) sont d'abord convertis via l'outil macOS « sips »."""
+    if path.suffix.lower() in {".heic", ".heif"}:
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "conv.jpg"
+            subprocess.run(["sips", "-s", "format", "jpeg", str(path), "--out", str(out)],
+                           check=True, capture_output=True)
+            with Image.open(out) as im:
+                im.load()
+                return im.copy()
+    with Image.open(path) as im:
+        im.load()
+        return im.copy()
 
 
 def clean_copy(img: Image.Image) -> Image.Image:
@@ -71,9 +88,7 @@ def main() -> None:
             continue
         key = slug(f.stem)
         try:
-            with Image.open(f) as im:
-                im.load()
-                img = clean_copy(im)
+            img = clean_copy(open_any(f))
         except Exception as e:  # fichier corrompu ou format non reconnu
             skipped.append(f"{f.name} (illisible : {e})")
             continue

@@ -26,9 +26,10 @@ window.EVENT = {
 
 window.PHOTO_DIR = "assets/img/participants/";
 
-// Participants inscrits, dans l'ordre d'inscription.
-// Le numéro (dossard + box) = la position dans la liste.
-// Les places restantes jusqu'à maxRunners s'affichent en cartes vierges.
-// Exemple :  { id: "lucas", name: "Lucas" },
+// Participants inscrits.
+// `bib` = numéro de dossard (et de box). Sans `bib`, le coureur prend
+// le premier numéro libre. Les places restantes s'affichent en cartes vierges.
+// `id` = nom de la photo (ex. photo « lucas-dubois.jpg » → id: "lucas-dubois").
 window.PARTICIPANTS = [
+  { id: "lucas-dubois", name: "Lucas", bib: 7 },
 ];
